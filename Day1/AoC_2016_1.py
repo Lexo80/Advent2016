@@ -23,24 +23,20 @@ class direction:
 
             
 heading = direction()  
-distance_N=0  
-distance_O=0
-distance_S=0
+distance_N=0
+distance_O=0 
+distance_S=0 
 distance_W=0
 with open('Puzzel Input.txt') as f:
     stream = f.read()
-    data = stream.split(",") 
-        
+    data = stream.split(",")         
     i=0   
-    print('anfang')
     for element in data:
         data[i] = data[i].strip()
         i+=1
     for element in data:
         heading.changeDir(element[0])
         d=heading.getDir()
-        print(element, end=':')
-        print(d,end='  ')
         if d is 'N':
             distance_N += int(element[1:len(element)])
         elif d is 'S':
@@ -51,13 +47,7 @@ with open('Puzzel Input.txt') as f:
             distance_W -= int(element[1:len(element)])
         else:
             pass
-        print('Norden:'+str(distance_N), end=' ')
-        print('Osten:' + str(distance_O),end=' ')
-        print('Sueden:'+ str(distance_S),end=' ')
-        print('Westen:' + str(distance_W),end=' ')
-        print('Gesamtdistanz:'+str(distance_N + distance_O + distance_S + distance_W),end='\n')
-    print('n-s:' + str(distance_N + distance_S))
-    print('o-w:' + str(distance_O + distance_W)) 
+
     print(abs(distance_N + distance_S)+abs(distance_O + distance_W))       
    
     
