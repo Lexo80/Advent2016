@@ -1,62 +1,50 @@
 """
 Advent of code 2016 
-Day 2 part 1
+Day 2 part 2
 """
-from collections import namedtuple
 
 
-class Index():
-    """manage keypad index for Advent of code day 2 part 1"""
+class SecondKeypad():
+    """manage keypad index for Advent of code day 2 part 2"""
 
     def __init__(self):
-        self.iH = 1
-        self.iV = 1
+        self.x = 0
+        self.y = 2
+        self.keypad = (('_', '_', '1', '_', '_'),
+                       ('_', '2', '3', '4', '_'),
+                       ('5', '6', '7', '8', '9'),
+                       ('_', 'A', 'B', 'C', '_'),
+                       ('_', '_', 'D', '_', '_')
+                       )
 
     def update(self, s):
-        if str(s).upper() == 'U':
-            self.iV -= 1
-            if self.iV <= 0:
-                self.iV = 0
-        elif str(s).upper() == 'D':
-            self.iV += 1
-            if self.iV >= 2:
-                self.iV = 2
-        elif str(s).upper() == 'R':
-            self.iH += 1
-            if self.iH >= 2:
-                self.iH = 2
-        elif str(s).upper() == 'L':
-            self.iH -= 1
-            if self.iH <= 0:
-                self.iH = 0
+        if str(s) == 'U':
+            if self.keypad[self.y][self.x] in ('D', 'A', 'B', 'C', '6', '7', '8', '3'):
+                self.y -= 1
+        elif str(s) == 'D':
+            if self.keypad[self.y][self.x] in ('1', '2', '3', '4', '6', '6', '7', '8', 'B'):
+                self.y += 1
+        elif str(s) == 'L':
+            if self.keypad[self.y][self.x] in ('3', '4', '6', '7', '8', '9', 'B', 'C'):
+                self.x -= 1
+        elif str(s) == 'R':
+            if self.keypad[self.y][self.x] in ('2', '3', '5', '6', '7', '8', 'A', 'B'):
+                self.x += 1
         else:
             pass
 
-    def getindexes(self):
-        return (self.iV, self.iH)
+    def getkey(self):
+        return str(self.keypad[self.y][self.x])
 
 
 with open('puzzel1.txt') as f:
     keys = [element.strip('\n') for element in f.readlines()]
 
-keypad = tuple(tuple(spalte + 3 * zeile for spalte in range(1, 4))
-               for zeile in range(3))
 
-
-index = Index()
+this = SecondKeypad()
 code = str('')
-Point = namedtuple('Point', ['zeile', 'spalte'])
 for key in keys:
     for element in key:
-        index.update(element)
-    k = Point(index.getindexes()[0], index.getindexes()[1])
-    taste = keypad[k.zeile][k.spalte]
-    code += str(taste)
-
-x = ((1),
-    (2, 3, 4),
-    (5, 6, 7, 8, 9),
-    ('A', 'B', 'C'),
-    ('D'))
-
-print(x)
+        this.update(element)
+    code += str(this.getkey())
+print(code)
